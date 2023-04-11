@@ -6,8 +6,6 @@ import time
 
 my_email = connect.ACCOUNT_EMAIL
 password = connect.ACCOUNT_PASSWORD
-MY_LAT = 33.787914
-MY_LNG = -117.853104
 
 
 def is_iss_overhead():
@@ -18,14 +16,15 @@ def is_iss_overhead():
     iss_latitude = float(iss_data["iss_position"]["latitude"])
     iss_longitude = float(iss_data["iss_position"]["longitude"])
 
-    if (MY_LAT - 5) <= iss_latitude <= (MY_LAT - 5) and (MY_LNG + 5) <= iss_longitude <= (MY_LNG + 5):
+    if (connect.MY_LAT - 5) <= iss_latitude <= (connect.MY_LAT - 5) and \
+            (connect.MY_LNG + 5) <= iss_longitude <= (connect.MY_LNG + 5):
         return True
 
 
 def is_night():
     parameters = {
-        "lat": MY_LAT,
-        "lng": MY_LNG,
+        "lat": connect.MY_LAT,
+        "lng": connect.MY_LNG,
         "formatted": 0,
     }
 
@@ -48,6 +47,6 @@ while True:
             connection.login(my_email, password)
             connection.sendmail(
                 from_addr=my_email,
-                to_addrs="dave@dryweb.com",
+                to_addrs=connect.SENT_TO,
                 msg=f"Subject: Look Up!\n\nThe ISS space station is overhead."
             )
